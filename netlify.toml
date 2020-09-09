@@ -1,4 +1,4 @@
 [build]
-base    = "./example"
+base    = "."
 publish = "./example/dist"
-command = "yarn && yarn build"
+command = "yarn && cd ./example && yarn && yarn build"
