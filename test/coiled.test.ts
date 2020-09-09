@@ -142,5 +142,56 @@ describe('Coiled', () => {
 
       expect(result.result.current).toBe('Sarah is 30 years old');
     });
+
+    it('should update multiple dependencies at once', () => {
+      const person = atom<string>({ key: 'person', default: 'John' });
+      const age = atom<number>({ key: 'age', default: 20 });
+
+      const personsAge = selector({
+        key: 'persons-age',
+        get: ({ get }) => `${get(person)} is ${get(age)} years old`,
+      });
+
+      const result = renderHook(() => useCoiledValue(personsAge));
+
+      expect(result.result.current).toBe('John is 20 years old');
+
+      act(() => {
+        person.setState('Sarah');
+        age.setState(30);
+      });
+
+      expect(result.result.current).toBe('Sarah is 30 years old');
+    });
+
+    it('should allow a chain of selectors as deps', () => {
+      const person = atom<string>({ key: 'person', default: 'John' });
+      const age = atom<number>({ key: 'age', default: 20 });
+
+      const personsAge = selector({
+        key: 'persons-age',
+        get: ({ get }) => `${get(person)} is ${get(age)} years old`,
+      });
+
+      const personSentence = selector({
+        key: 'persons-age',
+        get: ({ get }) => `My sentence is: "${get(personsAge)}"`,
+      });
+
+      const result = renderHook(() => useCoiledValue(personSentence));
+
+      expect(result.result.current).toBe(
+        'My sentence is: "John is 20 years old"'
+      );
+
+      act(() => {
+        person.setState('Sarah');
+        age.setState(30);
+      });
+
+      expect(result.result.current).toBe(
+        'My sentence is: "Sarah is 30 years old"'
+      );
+    });
   });
 });
