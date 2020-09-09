@@ -35,13 +35,15 @@
   "author": "Bennett Hardwick",
   "module": "dist/recoil-clone.esm.js",
   "devDependencies": {
+    "@testing-library/react-hooks": "^3.4.1",
     "@types/react": "^16.9.49",
-    "@types/react-dom": "^16.9.8",
     "husky": "^4.3.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "tsdx": "^0.13.3",
     "tslib": "^2.0.1",
     "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "react-test-renderer": "^16.13.1"
   }
 }
